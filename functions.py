@@ -20,6 +20,7 @@ def GetBit(x, y, grid):
         return -2
 
 
+
 def GetBitExists(x, y, grid):
     xValid = x >= 0 and x <= len(grid[0]) - 1
     yValid = y >= 0 and y <= len(grid[0]) - 1
@@ -153,6 +154,21 @@ def CheckCanMoveWater(sideBitDown, sideBit, bitsToFallThrough):
 
     return [canMove, isWater]
 
+def CheckCanMoveWaterSide(sideBit, bitsToFallThrough):
+    canMove = False
+    isWater = False
+
+    if sideBit == -1:
+        canMove = True
+        return [canMove, isWater]
+
+    if CheckBitExists(sideBit) and sideBit.GetName() in bitsToFallThrough:
+        canMove = True
+        isWater = True
+        return [canMove, isWater]
+
+    return [canMove, isWater]
+
 def CheckBitExists(bit):
     if bit != -1 and bit != -2:
         return True
@@ -167,4 +183,3 @@ def SwapBits(bitOnePos, bitTwoPos, grid):
     bitTwo.SetPos(bitOnePos[0], bitOnePos[1])
 
     return [bitTwoPos[0], bitTwoPos[1], bitTwo]
-

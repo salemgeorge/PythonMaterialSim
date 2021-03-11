@@ -12,6 +12,9 @@ from classes import WoodBit
 from classes import GasBit
 from classes import LavaBit
 from classes import GlassBit
+from classes import WaterVaporBit
+from classes import StoneBit
+from classes import TNTBit
 
 from functions import *
 from colors import *
@@ -53,12 +56,12 @@ while not done:
             if pygame.mouse.get_pressed()[0]:
                 if not CheckBitExists(GetBit(mouseX, mouseY, grid)):
                     grid[mouseX][mouseY] = cur_bit_selection(mouseX, mouseY)
-            elif pygame.mouse.get_pressed()[2]:
-                grid[mouseX][mouseY] = -1
-            elif pygame.mouse.get_pressed()[1]:
-                bitBelowCursor = GetBit(mouseX, mouseY, grid)
-                if CheckBitExists(bitBelowCursor) and bitBelowCursor.canBurn and not bitBelowCursor.GetSmokeCover():
-                    bitBelowCursor.Ignite(grid)
+                elif pygame.mouse.get_pressed()[2]:
+                    grid[mouseX][mouseY] = -1
+                elif pygame.mouse.get_pressed()[1]:
+                    bitBelowCursor = GetBit(mouseX, mouseY, grid)
+                    if CheckBitExists(bitBelowCursor) and bitBelowCursor.canBurn and not bitBelowCursor.GetSmokeCover():
+                        bitBelowCursor.Ignite(grid)
 
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -90,7 +93,13 @@ while not done:
             elif event.key == pygame.K_8:
                 cur_bit_selection = LavaBit
             elif event.key == pygame.K_9:
+                cur_bit_selection = WaterVaporBit
+            elif event.key == pygame.K_0:
+                cur_bit_selection = StoneBit
+            elif event.key == pygame.K_q:
                 cur_bit_selection = GlassBit
+            elif event.key == pygame.K_w:
+                cur_bit_selection = TNTBit
 
             if event.key == pygame.K_c:
                 grid = [[-1 for i in range(grid_width)] for j in range(grid_height)]
@@ -118,12 +127,19 @@ while not done:
                         otherBitPos = new_pos[3].GetPos()
                         grid[otherBitPos[0]][otherBitPos[1]] = new_pos[3]
 
+                        try:
+                            new_pos[3].DrawSelf(bit_width, bit_height, screen)
+                        except:
+                            new_pos[3].DrawSelf(bit_width, bit_height)
+
                         grid[new_pos[0]][new_pos[1]] = bitToUpdate
                     elif "BitDied" in new_pos:
                         if "ProduceSmoke" in new_pos:
                             grid[new_pos[0]][new_pos[1]] = SmokeBit(new_pos[0], new_pos[1])
                         else:
                             grid[new_pos[0]][new_pos[1]] = -1
+                    elif "LavaCooled" in new_pos:
+                        grid[new_pos[0]][new_pos[1]] = StoneBit(new_pos[0], new_pos[1])
                     else:
                         grid[new_pos[0]][new_pos[1]] = bitToUpdate
                         grid[x][y] = -1
@@ -136,9 +152,34 @@ while not done:
                         grid[new_pos[0]][new_pos[1]] = -1
 
                     bitToUpdate = -1
+                elif "LavaCooled" in new_pos:
+                    grid[new_pos[0]][new_pos[1]] = StoneBit(new_pos[0], new_pos[1])
+                elif "Exploded" in new_pos:
+                        width = math.floor(new_pos[3] / 2)
+                        bitPos = bitToUpdate.GetPos()
+                        bitX = bitPos[0]
+                        bitY = bitPos[1]
+
+                        for explosionX in range(bitX - width, bitX + width + 1):
+                            for explosionY in range(bitY - width, bitY + width + 1):
+                                if explosionX != bitX or explosionY != bitY:
+                                    bit = GetBit(explosionX, explosionY, grid)
+                                    if CheckBitExists(bit) and bit.GetName() != "TNT":
+                                        if random.random() <= 0.5:
+                                            grid[explosionX][explosionY] = SmokeBit(explosionX, y)
+                                        else:
+                                            grid[explosionX][explosionY] = -1
+                                    elif CheckBitExists(bit) and bit.GetName() == "TNT":
+                                        bit.Ignite(grid)
+
+                        bitToUpdate = -1
+                        grid[bitX][bitY] = -1
 
                 if bitToUpdate != -1:
-                    bitToUpdate.DrawSelf(bit_width, bit_height)
+                    try:
+                        bitToUpdate.DrawSelf(bit_width, bit_height, screen)
+                    except:
+                        bitToUpdate.DrawSelf(bit_width, bit_height)
 
 
     selectedBitText = font.render(cur_bit_selection.name, True, WHITE)
