@@ -1,0 +1,158 @@
+<meta charset="UTF-8">
+
+<style>
+    canvas {
+        border: 2px solid black;
+        border-radius: 5px;
+        margin: 5px;
+        display: flex;
+    }
+
+    .buttonClass {
+        color: white;
+        background-color: black;
+        border: 2px solid slateblue;
+        box-shadow: 0 8px slategray;
+        border-radius: 8px;
+        outline: none;
+        transition-duration: .1s;
+        padding: 10px;
+        /* margin-left: 510px;
+        margin-top: 96px; */
+        top: 463px;
+        left: 518px;
+        position: fixed;
+        /* margin-bottom: 10px; */
+    }
+
+    .buttonClass:hover {
+        border: 2px solid lightgray;
+    }
+
+    .buttonClass:active {
+        box-shadow: 0 2px slategray;
+        transform: translateY(7px);
+    }
+
+    .sandClass {
+        color: #FFC300;
+        background-color: black;
+        border: 2px solid slateblue;
+        box-shadow: 0 8px slategray;
+        border-radius: 8px;
+        outline: none;
+        transition-duration: .1s;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: 510px;
+        margin-top: -450px;
+        margin-bottom: 10px;
+        height: 40;
+        width: 100;
+        display: block;
+    }
+
+    .sandClass:hover {
+        border: 2px solid lightgray;
+    }
+
+    .sandClass:active {
+        box-shadow: 0 2px slategray;
+        transform: translateY(7px);
+    }
+
+    .dirtClass {
+        color:  #a04000;
+        background-color: black;
+        border: 2px solid slateblue;
+        box-shadow: 0 8px slategray;
+        border-radius: 8px;
+        outline: none;
+        transition-duration: .1s;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: 510px;
+        margin-bottom: 10px;
+        display: block;
+        height: 40;
+        width: 100;
+    }
+
+    .dirtClass:hover {
+        border: 2px solid lightgray;
+    }
+
+    .dirtClass:active {
+        box-shadow: 0 2px slategray;
+        transform: translateY(7px);
+    }
+
+    .smokeClass {
+        color: #707b7c;
+        background-color: black;
+        border: 2px solid slateblue;
+        box-shadow: 0 8px slategray;
+        border-radius: 8px;
+        outline: none;
+        transition-duration: .1s;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: 510px;
+        margin-bottom: 10px;
+        display: block;
+        height: 40;
+        width: 100;
+    }
+
+    .smokeClass:hover {
+        border: 2px solid lightgray;
+    }
+
+    .smokeClass:active {
+        box-shadow: 0 2px slategray;
+        transform: translateY(7px);
+    }
+
+    .barrierClass {
+        color: whitesmoke;
+        background-color: black;
+        border: 2px solid slateblue;
+        box-shadow: 0 8px slategray;
+        border-radius: 8px;
+        outline: none;
+        transition-duration: .1s;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: 510px;
+        margin-bottom: 10px;
+        display: block;
+        height: 40;
+        width: 100;
+    }
+
+    .barrierClass:hover {
+        border: 2px solid lightgray;
+    }
+
+    .barrierClass:active {
+        box-shadow: 0 2px slategray;
+        transform: translateY(7px);
+    }
+</style>
+
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<div>
+    <button id="sandSelector" class="sandClass">Sand</button>
+    <button id="dirtSelector" class="dirtClass">Dirt</button>
+    <button id="smokeSelector" class="smokeClass">Smoke</button>
+    <button id="barrierSelector" class="barrierClass">Barrier</button>
+</div>
+
+<script src="src/BitBase.js"></script>
+<script src="src/BitManager.js"></script>
+<script src="src/GameLoop.js"></script>
